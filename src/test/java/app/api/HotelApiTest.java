@@ -10,25 +10,27 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-class hotelApiTest {
+class HotelApiTest {
 
     private static Javalin app;
     private static EntityManagerFactory emf;
+
+    private int h1Id;
+    private int h2Id;
 
     @BeforeAll
     static void setUpAll() {
         HibernateConfig.setTest(true);
         emf = HibernateConfig.getEntityManagerFactoryForTest();
+
         app = ApplicationConfig.startServer(7777);
 
-        RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 7777;
-        RestAssured.basePath = "/api/v1";
+        RestAssured.baseURI = "http://localhost:7777/api/v1";
     }
 
     @AfterAll
@@ -38,24 +40,11 @@ class hotelApiTest {
     }
 
     @BeforeEach
-    void setUpEach() {
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM Room").executeUpdate();
-            em.createQuery("DELETE FROM Hotel").executeUpdate();
-
-            Hotel h1 = new Hotel("TestHotel1", "Street 1");
-            Hotel h2 = new Hotel("TestHotel2", "Street 2");
-
-            Room r1 = new Room("101", 100.0, h1);
-            Room r2 = new Room("102", 150.0, h1);
-            h1.getRooms().add(r1);
-            h1.getRooms().add(r2);
-
-            em.persist(h1);
-            em.persist(h2);
-            em.getTransaction().commit();
-        }
+    void seedDb() {
+        // Fyld DB med 2 hoteller og få de faktiske IDs tilbage
+        Map<String, Integer> ids = HotelPopulator.seedTwoHotels(emf);
+        h1Id = ids.get("h1");
+        h2Id = ids.get("h2");
     }
 
     @Test
@@ -70,7 +59,7 @@ class hotelApiTest {
     @Test
     void testGetSpecificHotel() {
         given()
-                .when().get("/hotel/1")
+                .when().get("/hotel/" + h1Id)
                 .then()
                 .statusCode(200)
                 .body("hotelName", equalTo("TestHotel1"))
@@ -80,7 +69,7 @@ class hotelApiTest {
     @Test
     void testGetRoomsForHotel() {
         given()
-                .when().get("/hotel/1/rooms")
+                .when().get("/hotel/" + h1Id + "/rooms")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2))
@@ -91,12 +80,12 @@ class hotelApiTest {
     @Test
     void testCreateHotel() {
         String json = """
-            {
-              "hotelName": "CreatedHotel",
-              "hotelAddress": "New Street",
-              "rooms": []
-            }
-            """;
+          {
+            "hotelName": "CreatedHotel",
+            "hotelAddress": "New Street",
+            "rooms": []
+          }
+          """;
 
         given()
                 .contentType("application/json")
@@ -104,38 +93,42 @@ class hotelApiTest {
                 .when().post("/hotel")
                 .then()
                 .statusCode(201)
-                .body("hotelName", equalTo("CreatedHotel"));
+                .body("hotelName", equalTo("CreatedHotel"))
+                .body("hotelAddress", equalTo("New Street"));
     }
 
     @Test
     void testUpdateHotel() {
         String json = """
-            {
-              "hotelName": "UpdatedHotel",
-              "hotelAddress": "Updated Street",
-              "rooms": []
-            }
-            """;
+          {
+            "hotelName": "UpdatedHotel",
+            "hotelAddress": "Updated Street",
+            "rooms": []
+          }
+          """;
 
         given()
                 .contentType("application/json")
                 .body(json)
-                .when().put("/hotel/1")
+                .when().put("/hotel/" + h1Id)
                 .then()
                 .statusCode(200)
-                .body("hotelName", equalTo("UpdatedHotel"));
+                .body("hotelName", equalTo("UpdatedHotel"))
+                .body("hotelAddress", equalTo("Updated Street"));
     }
 
     @Test
     void testDeleteHotel() {
+        // Slet det andet seeded hotel
         given()
-                .when().delete("/hotel/2")
+                .when().delete("/hotel/" + h2Id)
                 .then()
                 .statusCode(200)
                 .body(equalTo("Hotel deleted"));
 
+        // Bekræft at det er væk
         given()
-                .when().get("/hotel/2")
+                .when().get("/hotel/" + h2Id)
                 .then()
                 .statusCode(404);
     }
