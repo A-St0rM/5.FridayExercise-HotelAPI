@@ -12,11 +12,17 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
+@Table(name = "hotel")
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hotel_id", nullable = false, unique = true)
     private Integer id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
