@@ -6,12 +6,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@ToString
+@Data
 @Entity
 public class Room {
     @Id
@@ -23,5 +20,12 @@ public class Room {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
+    public Room(String number, double price, Hotel hotel) {
+        this.number = number;
+        this.price = price;
+        this.hotel = hotel;
+    }
+
 
 }

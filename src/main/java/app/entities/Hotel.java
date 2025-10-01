@@ -21,4 +21,10 @@ public class Hotel {
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Room> rooms = new ArrayList<>();
+
+    public Hotel(String name, String address) {
+        this.name = name;
+        this.address = address;
+        this.rooms = new ArrayList<>();
+    }
 }
