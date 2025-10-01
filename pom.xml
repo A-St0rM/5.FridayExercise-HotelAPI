@@ -20,6 +20,8 @@
         <logback-classic>1.5.16</logback-classic>
         <org.slf4j>2.0.16</org.slf4j>
         <hamcrest>3.0</hamcrest>
+        <token.security.version>1.0.2</token.security.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
     </properties>
 
     <build>
@@ -40,6 +42,13 @@
             <version>2.18.3</version>
         </dependency>
 
+
+
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>${jbcrypt.version}</version>
+        </dependency>
 
 
         <dependency>
@@ -67,6 +76,13 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.18.3</version> <!-- match med din jackson version -->
+        </dependency>
+
 
         <!--  TESTING      -->
         <dependency>
