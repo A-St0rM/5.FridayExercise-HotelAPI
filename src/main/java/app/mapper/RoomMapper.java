@@ -13,6 +13,7 @@ public class RoomMapper {
         roomDTO.setId(room.getId());
         roomDTO.setNumber(room.getNumber());
         roomDTO.setPrice(room.getPrice());
+
         roomDTO.setHotelId(room.getHotel().getId());
 
         return roomDTO;

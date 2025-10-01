@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomDTO {
-    private int id;
+    private Integer id;
     private int hotelId;
     private String number;
     private double price;
