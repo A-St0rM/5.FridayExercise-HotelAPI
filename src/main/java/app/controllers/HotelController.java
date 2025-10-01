@@ -31,7 +31,7 @@ public class HotelController {
     }
 
     public void getById(Context ctx) {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int id = Integer.parseInt(ctx.pathParam("hotelId"));
         Hotel hotel = dao.getById(id);
         if (hotel != null) {
             ctx.status(200);
@@ -51,7 +51,7 @@ public class HotelController {
     }
 
     public void updateHotel(Context ctx) {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int id = Integer.parseInt(ctx.pathParam("hotelId"));
         HotelDTO dto = ctx.bodyAsClass(HotelDTO.class);
 
         Hotel hotel = dao.getById(id);
@@ -67,7 +67,7 @@ public class HotelController {
     }
 
     public void deleteHotel(Context ctx) {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int id = Integer.parseInt(ctx.pathParam("hotelId"));
         boolean deleted = dao.delete(id);
         if (deleted) {
             ctx.status(HttpStatus.OK).result("Hotel deleted");
@@ -77,7 +77,7 @@ public class HotelController {
     }
 
     public void getRoomsForHotel(Context ctx) {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int id = Integer.parseInt(ctx.pathParam("hotelId"));
         Hotel hotel = dao.getById(id);
         if (hotel == null) {
             ctx.status(HttpStatus.NOT_FOUND).result("Hotel not found");

@@ -18,7 +18,7 @@ public class RoomController {
     private final RoomDAO roomDAO = new RoomDAO(emf);
 
     public void addRoomToHotel(Context ctx) {
-        int hotelId = Integer.parseInt(ctx.pathParam("id"));
+        int hotelId = Integer.parseInt(ctx.pathParam("hotelId"));
         RoomDTO dto = ctx.bodyAsClass(RoomDTO.class);
 
         Hotel hotel = hotelDAO.getById(hotelId);

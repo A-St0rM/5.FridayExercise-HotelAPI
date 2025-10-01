@@ -20,12 +20,12 @@ GET http://localhost:7007/api/v1/hotel/
 GET http://localhost:7007/api/v1/hotel/1
 
 ### Update hotel by id
-PUT http://localhost:7076/api/v1/hotel/1
+PUT http://localhost:7007/api/v1/hotel/1
 Content-Type: application/json
 
 {
-  "name": "Regnbad",
-  "address": "Plantagevej 29",
+  "hotelName": "Regnbad",
+  "hotelAddress": "Plantagevej 29",
 
   "rooms":[
 
@@ -42,13 +42,13 @@ GET http://localhost:7007/api/v1/hotel/1/rooms
 
 
 ### Add room to hotel by hotel id
-POST http://localhost:7007/api/v1/room/hotel/1/room
+POST http://localhost:7007/api/v1/hotel/1/rooms
 Content-Type: application/json
 
 {
-  "number": "109F",
-  "price": "99.0"
+  "number": "99",
+  "price": 200.0
 }
 
 ### Delete room from hotel with hotelId and roomId
-DELETE http://localhost:7007/api/v1/room/id
+DELETE http://localhost:7007/api/v1/hotel/1/rooms/2

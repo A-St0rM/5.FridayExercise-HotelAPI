@@ -13,15 +13,14 @@ public class HotelRoute {
     public EndpointGroup getRoutes() {
         return () -> {
             get("/", hotelController::getAllHotels);
-            get("/{id}", hotelController::getById);
-            get("/{id}/rooms", hotelController::getRoomsForHotel);
+            get("/{hotelId}", hotelController::getById);
+            get("/{hotelId}/rooms", hotelController::getRoomsForHotel);
             post("/", hotelController::createHotel);
-            put("/{id}", hotelController::updateHotel);
-            delete("/{id}", hotelController::deleteHotel);
+            put("/{hotelId}", hotelController::updateHotel);
+            delete("/{hotelId}", hotelController::deleteHotel);
 
             // Room endpoints under et hotel
             path("/{hotelId}/rooms", () -> {
-                get(hotelController::getRoomsForHotel);
                 post(roomController::addRoomToHotel);
                 delete("/{roomId}", roomController::removeRoomFromHotel);
             });
