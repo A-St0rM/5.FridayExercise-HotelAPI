@@ -1,4 +1,6 @@
-package app.security;
+package app.security.interfaces;
+
+import app.entities.Role;
 
 public interface ISecurityUser {
     boolean verifyPassword(String pw);

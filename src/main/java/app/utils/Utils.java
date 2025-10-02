@@ -29,10 +29,10 @@ public class Utils {
     }
 
     public ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // Ignore unknown properties in JSON
-        objectMapper.registerModule(new JavaTimeModule()); // Serialize and deserialize java.time objects
-        objectMapper.writer(new DefaultPrettyPrinter());
-        return objectMapper;
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // Ignore unknown properties in JSON
+        jsonMapper.registerModule(new JavaTimeModule()); // Serialize and deserialize java.time objects
+        jsonMapper.writer(new DefaultPrettyPrinter());
+        return jsonMapper;
     }
 }

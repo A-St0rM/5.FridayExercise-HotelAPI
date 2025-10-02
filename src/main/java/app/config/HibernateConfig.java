@@ -2,8 +2,8 @@ package app.config;
 
 import app.entities.Hotel;
 import app.entities.Room;
-import app.security.Role;
-import app.security.User;
+import app.entities.Role;
+import app.entities.User;
 import app.utils.Utils;
 
 import jakarta.persistence.EntityManagerFactory;
