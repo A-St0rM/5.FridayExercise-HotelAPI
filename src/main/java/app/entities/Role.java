@@ -11,6 +11,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "roles")
 public class Role {
     @Id
     @Column(name = "rolename", nullable = false)
