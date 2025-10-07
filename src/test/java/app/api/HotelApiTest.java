@@ -2,14 +2,10 @@ package app.api;
 
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
-import app.entities.Hotel;
-import app.entities.Room;
 import io.javalin.Javalin;
 import io.restassured.RestAssured;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
-
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -19,6 +15,7 @@ class HotelApiTest {
 
     private static Javalin app;
     private static EntityManagerFactory emf;
+    private static ApplicationConfig appConfig;
 
     private int h1Id;
     private int h2Id;
@@ -28,7 +25,7 @@ class HotelApiTest {
         HibernateConfig.setTest(true);
         emf = HibernateConfig.getEntityManagerFactoryForTest();
 
-        app = ApplicationConfig.startServer(7777);
+        appConfig = ApplicationConfig.startServer(7777);
 
         RestAssured.baseURI = "http://localhost:7777/api/v1";
     }

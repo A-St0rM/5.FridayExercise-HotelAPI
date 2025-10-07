@@ -2,6 +2,7 @@ package app.config;
 
 import app.Main;
 import app.routes.Route;
+import app.security.SecurityController;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.HttpStatus;
@@ -16,6 +17,8 @@ public class ApplicationConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
     private static final Logger debugLogger = LoggerFactory.getLogger("app");
+    private static SecurityController securityController = new SecurityController();
+    private static ApplicationConfig appConfig;
 
     public static void configuration(JavalinConfig config){
         config.showJavalinBanner = false;
@@ -24,7 +27,7 @@ public class ApplicationConfig {
         config.router.apiBuilder(routes.getRoutes());
     }
 
-    public static Javalin startServer(int port) {
+    public static ApplicationConfig startServer(int port) {
         routes = new Route();
         var app = Javalin.create(ApplicationConfig::configuration);
 
@@ -58,8 +61,11 @@ public class ApplicationConfig {
             throw new InternalServerErrorResponse("Off limits!", msg);
         });
 
+        app.beforeMatched(securityController.authenticate());
+        app.beforeMatched(securityController.authorize());
+
         app.start(port);
-        return app;
+        return appConfig;
     }
 
     public static void stopServer(Javalin app) {
